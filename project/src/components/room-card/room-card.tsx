@@ -9,10 +9,12 @@ type RoomCardProps = {
 function RoomCard(props: RoomCardProps): JSX.Element {
   const [activeCard, setActiveCard] = useState('');
 
+  const mouseOverHandler = () => setActiveCard(props.offer.id);
+
   return (
     <article
       className="cities__card place-card"
-      onMouseOver={() => setActiveCard(props.offer.id)}
+      onMouseOver={mouseOverHandler}
     >
       <div className="place-card__mark" style={props.offer.isPremium ? {} : { display: 'none' }}>
         <span>Premium</span>
