@@ -1,8 +1,9 @@
 import Logo from '../../components/logo/logo';
-import RoomCard from '../../components/room-card/room-card';
+import RoomsList from '../../components/rooms-list/rooms-list';
+import { Offers } from '../../types/offer';
 
 type MainScreenProps = {
-  roomCardsCount: number;
+  offers: Offers;
 };
 
 function MainScreen(props: MainScreenProps): JSX.Element {
@@ -75,7 +76,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{props.roomCardsCount} places to stay in Amsterdam</b>
+              <b className="places__found">{props.offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -91,9 +92,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: props.roomCardsCount }).map(() => <RoomCard key='id'/>)}
-              </div>
+              <RoomsList offers={props.offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
