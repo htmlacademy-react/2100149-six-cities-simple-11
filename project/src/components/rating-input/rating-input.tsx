@@ -4,10 +4,10 @@ type RatingInputProps = {
   titles: string[];
 }
 
-function RatingInput(props: RatingInputProps): JSX.Element {
+function RatingInput({titles}: RatingInputProps): JSX.Element {
   return (
     <div className="reviews__rating-form form__rating">
-      {props.titles.map((item, index) => <RatingStar key={item } title={item} index = {index} />)}
+      {titles.map((item, index) => <RatingStar key={item } title={item} index = {index} />)}
     </div>
   );
 }

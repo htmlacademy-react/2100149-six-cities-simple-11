@@ -17,7 +17,9 @@ export const Offers: Offer[] = [
       name: 'Ivan',
       avatar: 'img/avatar-angelina.jpg',
       isPro: false,
-    }
+    },
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
   },
   {
     id: ':2',
@@ -35,7 +37,9 @@ export const Offers: Offer[] = [
       name: 'Angelina',
       avatar: 'img/avatar-angelina.jpg',
       isPro: true,
-    }
+    },
+    lat: 52.3609553943508,
+    lng: 4.85309666406198
   },
   {
     id: ':3',
@@ -53,7 +57,9 @@ export const Offers: Offer[] = [
       name: 'Ignat',
       avatar: 'img/avatar-angelina.jpg',
       isPro: false,
-    }
+    },
+    lat: 52.3909553943508,
+    lng: 4.929309666406198
   },
   {
     id: ':4',
@@ -71,6 +77,8 @@ export const Offers: Offer[] = [
       name: 'Brat s gor Egor',
       avatar: 'img/avatar-angelina.jpg',
       isPro: false,
-    }
+    },
+    lat: 52.3809553943508,
+    lng: 4.939309666406198
   },
 ];
