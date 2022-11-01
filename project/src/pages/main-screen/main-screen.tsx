@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import Logo from '../../components/logo/logo';
 import RoomsList from '../../components/rooms-list/rooms-list';
+import Map from '../../components/map/map';
 import { Offers } from '../../types/offer';
 
 type MainScreenProps = {
   offers: Offers;
 };
 
-function MainScreen(props: MainScreenProps): JSX.Element {
+function MainScreen({offers}: MainScreenProps): JSX.Element {
+  const [activeCard, setActiveCard] = useState('');
+
   return (
     <div className="page page--gray page--main">
       <div style={{ display: 'none' }}>
@@ -76,7 +80,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{props.offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -92,10 +96,10 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <RoomsList offers={props.offers} />
+              <RoomsList offers={offers} activeCard={activeCard} onSelectCard={ setActiveCard} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map offers={offers} activeCard={ activeCard} />
             </div>
           </div>
         </div>

@@ -1,33 +1,33 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 
 type RoomCardProps = {
   offer: Offer;
+  activeCard: string;
+  onSelectCard: (id:string) => void;
 };
 
-function RoomCard(props: RoomCardProps): JSX.Element {
-  const [activeCard, setActiveCard] = useState('');
+function RoomCard({offer, activeCard, onSelectCard}: RoomCardProps): JSX.Element {
 
-  const mouseOverHandler = () => setActiveCard(props.offer.id);
+  const mouseOverHandler = () => onSelectCard(offer.id);
 
   return (
     <article
       className="cities__card place-card"
       onMouseOver={mouseOverHandler}
     >
-      <div className="place-card__mark" style={props.offer.isPremium ? {} : { display: 'none' }}>
+      <div className="place-card__mark" style={offer.isPremium ? {} : { display: 'none' }}>
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${ activeCard}`}>
-          <img className="place-card__image" src={props.offer.photos[0]} width="260" height="200" alt="Place image" />
+        <Link to={`/offer/${activeCard}`}>
+          <img className="place-card__image" src={offer.photos[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{props.offer.price}</b>
+            <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
         </div>
@@ -38,9 +38,9 @@ function RoomCard(props: RoomCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${activeCard}`}>{props.offer.title}</Link>
+          <Link to={`/offer/${activeCard}`}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{props.offer.type}</p>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );

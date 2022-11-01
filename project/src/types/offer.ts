@@ -17,4 +17,6 @@ export type Offer = {
     avatar: string;
     isPro: boolean;
   };
+  lat: number;
+  lng: number;
 };
