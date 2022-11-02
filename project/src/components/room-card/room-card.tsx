@@ -23,7 +23,7 @@ function RoomCard({offer, activeCard, onSelectCard, className}: RoomCardProps): 
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${activeCard}`} onClick ={onClickHandler}>
-          <img className="place-card__image"  src={offer.photos[0]} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.photos[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
