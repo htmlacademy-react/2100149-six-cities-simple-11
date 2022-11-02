@@ -4,24 +4,26 @@ import { Offer } from '../../types/offer';
 type RoomCardProps = {
   offer: Offer;
   activeCard: string;
-  onSelectCard: (id:string) => void;
+  onSelectCard: (id: string) => void;
+  className: string;
 };
 
-function RoomCard({offer, activeCard, onSelectCard}: RoomCardProps): JSX.Element {
+function RoomCard({offer, activeCard, onSelectCard, className}: RoomCardProps): JSX.Element {
 
   const mouseOverHandler = () => onSelectCard(offer.id);
+  const mouseLeavehandler = () => onSelectCard('');
+  const onClickHandler = () => window.scrollTo(0, 0);
 
   return (
     <article
-      className="cities__card place-card"
+      className={`${className}__card place-card`}
       onMouseOver={mouseOverHandler}
+      onMouseLeave={mouseLeavehandler}
     >
-      <div className="place-card__mark" style={offer.isPremium ? {} : { display: 'none' }}>
-        <span>Premium</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${activeCard}`}>
-          <img className="place-card__image" src={offer.photos[0]} width="260" height="200" alt="Place image" />
+      {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
+        <Link to={`/offer/${activeCard}`} onClick ={onClickHandler}>
+          <img className="place-card__image"  src={offer.photos[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -38,7 +40,7 @@ function RoomCard({offer, activeCard, onSelectCard}: RoomCardProps): JSX.Element
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${activeCard}`}>{offer.title}</Link>
+          <Link to={`/offer/${activeCard}`} onClick={onClickHandler} >{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
