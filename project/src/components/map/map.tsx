@@ -9,7 +9,7 @@ type MapProps = {
   activeCard: string | undefined;
 };
 
-const amsterdam = {
+const DEFAULT_CITY = {
   lat: 52.374,
   lng: 4.88969
 };
@@ -17,7 +17,7 @@ const amsterdam = {
 function Map({offers, activeCard}: MapProps): JSX.Element {
   const mapRef = useRef(null);
 
-  const map = useMap(mapRef, amsterdam);
+  const map = useMap(mapRef, DEFAULT_CITY);
 
   const setMarkers = () => {
     const defaultCustomIcon = new Icon({

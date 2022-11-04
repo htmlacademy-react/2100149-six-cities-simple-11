@@ -30,7 +30,7 @@ function App({ offers }: AppProps): JSX.Element {
           element={<RoomScreen offers={offers} activeCard={activeCard} onSelectCard={setActiveCard} />}
         />
         <Route
-          path="*"
+          path={AppRoute.NotFound}
           element={<NotFoundScreen />}
         />
       </Routes>

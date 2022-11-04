@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams} from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -9,7 +9,7 @@ import RoomsList from '../../components/rooms-list/rooms-list';
 import { Offers } from '../../types/offer';
 import { Reviews } from '../../types/review';
 import { reviews } from '../../mocks/reviews';
-
+import { AppRoute } from '../../const';
 
 type RoomScreenProps = {
   offers: Offers;
@@ -20,15 +20,13 @@ type RoomScreenProps = {
 function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.Element {
   const params = useParams();
   const currentOffer = offers.find((offer) => offer.id === params.id);
-
   const otherOffers = offers.filter((offer) => offer.id !== params.id);
 
   if (!currentOffer) {
-    return <Navigate to="*" />;
+    return <Navigate to={AppRoute.NotFound} />;
   }
 
   const { id, title, description, isPremium, type, rating, bedroomsCount, guestsCount, price, features, photos, owner } = currentOffer;
-
   const currentOfferReviews: Reviews = [];
   reviews.map((review) => review.offerId === id ? currentOfferReviews.push(review) : 0);
 
@@ -41,7 +39,7 @@ function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
-            <Logo/>
+            <Logo />
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
@@ -65,7 +63,7 @@ function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {photos.map((photo) => <RoomPhoto key={photo} photo={photo}/>)}
+              {photos.map((photo) => <RoomPhoto key={photo} photo={photo} />)}
             </div>
           </div>
           <div className="property__container container">
@@ -98,7 +96,7 @@ function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.
                 <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
-              <Features features={features}/>
+              <Features features={features} />
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
@@ -118,8 +116,8 @@ function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{currentOfferReviews.length}</span></h2>
-                <ReviewsList reviews={currentOfferReviews}/>
-                <ReviewForm/>
+                <ReviewsList reviews={currentOfferReviews} />
+                <ReviewForm />
               </section>
             </div>
           </div>
