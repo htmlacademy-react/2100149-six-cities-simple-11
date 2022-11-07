@@ -1,6 +1,6 @@
-import { useRef, useEffect} from 'react';
-import { Icon, Marker } from 'leaflet';
+import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/useMap';
+import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offers } from '../../types/offer';
 
@@ -9,7 +9,7 @@ type MapProps = {
   activeCard: string | undefined;
 };
 
-const amsterdam = {
+const DEFAULT_CITY = {
   lat: 52.374,
   lng: 4.88969
 };
@@ -17,7 +17,7 @@ const amsterdam = {
 function Map({offers, activeCard}: MapProps): JSX.Element {
   const mapRef = useRef(null);
 
-  const map = useMap(mapRef, amsterdam, null);
+  const map = useMap(mapRef, DEFAULT_CITY);
 
   const setMarkers = () => {
     const defaultCustomIcon = new Icon({
@@ -32,12 +32,16 @@ function Map({offers, activeCard}: MapProps): JSX.Element {
       iconAnchor: [20, 40]
     });
 
+    const markers: Marker[] = [];
+
     if (map) {
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.lat,
           lng: offer.lng
         });
+
+        markers.push(marker);
 
         marker
           .setIcon(activeCard !== undefined && offer.id === activeCard
@@ -47,15 +51,13 @@ function Map({offers, activeCard}: MapProps): JSX.Element {
           .addTo(map);
       });
     }
+
+    return () => markers.forEach((marker) => marker.remove());
   };
 
   useEffect(setMarkers, [map, offers, activeCard]);
 
-  return (
-    <section className="cities__map map">
-      <div style={{ height: '100%' }} ref={mapRef} />
-    </section>
-  );
+  return <div style={{ height: '100%' }} ref={mapRef} />;
 }
 
 export default Map;

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Logo from '../../components/logo/logo';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import Map from '../../components/map/map';
@@ -6,10 +5,12 @@ import { Offers } from '../../types/offer';
 
 type MainScreenProps = {
   offers: Offers;
+  activeCard: string;
+  onSelectCard: (id: string) => void;
 };
 
-function MainScreen({offers}: MainScreenProps): JSX.Element {
-  const [activeCard, setActiveCard] = useState('');
+function MainScreen({offers, activeCard, onSelectCard}: MainScreenProps): JSX.Element {
+
 
   return (
     <div className="page page--gray page--main">
@@ -96,10 +97,14 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <RoomsList offers={offers} activeCard={activeCard} onSelectCard={ setActiveCard} />
+              <div className="cities__places-list places__list tabs__content">
+                <RoomsList offers={offers} activeCard={activeCard} onSelectCard={onSelectCard} className={'cities'} />
+              </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={offers} activeCard={ activeCard} />
+              <section className="cities__map map">
+                <Map offers={offers} activeCard={activeCard} />
+              </section>
             </div>
           </div>
         </div>

@@ -4,14 +4,15 @@ import { Offers } from '../../types/offer';
 type RoomsListProps = {
   offers: Offers;
   activeCard: string;
-  onSelectCard: (id:string) => void;
+  onSelectCard: (id: string) => void;
+  className: string;
 };
 
-function RoomsList({offers, activeCard, onSelectCard}: RoomsListProps): JSX.Element {
+function RoomsList({offers, activeCard, onSelectCard, className}: RoomsListProps): JSX.Element {
   return (
-    <div className="cities__places-list places__list tabs__content">
-      {offers.map((item) => <RoomCard key={item.id} offer={item} activeCard={activeCard} onSelectCard={onSelectCard}/>)}
-    </div>
+    <>
+      {offers.map((offer) => <RoomCard key={offer.id} offer={offer} activeCard={activeCard} onSelectCard={onSelectCard} className={className} />)}
+    </>
   );
 }
 

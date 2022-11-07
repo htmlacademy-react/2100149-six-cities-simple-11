@@ -43,7 +43,7 @@ export const Offers: Offer[] = [
   },
   {
     id: ':3',
-    photos: ['img/apartment-03.jpg'],
+    photos: ['img/apartment-01.jpg', 'img/apartment-03.jpg'],
     title: 'Some title',
     description: 'Some description',
     isPremium: true,

@@ -1,5 +1,6 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, BrowserRouter, Routes} from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useState } from 'react';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
 import RoomScreen from '../../pages/room-screen/room-screen';
@@ -10,13 +11,15 @@ type AppProps = {
   offers: Offers;
 }
 
-function App({offers}: AppProps): JSX.Element {
+function App({ offers }: AppProps): JSX.Element {
+  const [activeCard, setActiveCard] = useState('');
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen offers={offers}/>}
+          element={<MainScreen offers={offers} activeCard={activeCard} onSelectCard={setActiveCard} />}
         />
         <Route
           path={AppRoute.Login}
@@ -24,10 +27,10 @@ function App({offers}: AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<RoomScreen />}
+          element={<RoomScreen offers={offers} activeCard={activeCard} onSelectCard={setActiveCard} />}
         />
         <Route
-          path="*"
+          path={AppRoute.NotFound}
           element={<NotFoundScreen />}
         />
       </Routes>
