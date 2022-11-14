@@ -2,6 +2,7 @@ export type Offers = Offer[];
 
 export type Offer = {
   id: string;
+  city: string;
   photos: string[];
   title: string;
   description: string;

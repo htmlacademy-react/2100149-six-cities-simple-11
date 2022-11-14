@@ -3,6 +3,7 @@ import { Offer } from '../types/offer';
 export const Offers: Offer[] = [
   {
     id: ':1',
+    city: 'Paris',
     photos: ['img/apartment-01.jpg'],
     title: 'Some title',
     description: 'Some description',
@@ -23,6 +24,7 @@ export const Offers: Offer[] = [
   },
   {
     id: ':2',
+    city: 'Amsterdam',
     photos: ['img/apartment-02.jpg'],
     title: 'Some title',
     description: 'Some description',
@@ -43,6 +45,7 @@ export const Offers: Offer[] = [
   },
   {
     id: ':3',
+    city: 'Amsterdam',
     photos: ['img/apartment-01.jpg', 'img/apartment-03.jpg'],
     title: 'Some title',
     description: 'Some description',
@@ -63,6 +66,7 @@ export const Offers: Offer[] = [
   },
   {
     id: ':4',
+    city: 'Amsterdam',
     photos: ['img/apartment-02.jpg'],
     title: 'Some title',
     description: 'Some description',

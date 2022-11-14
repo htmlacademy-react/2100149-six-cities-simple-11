@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import useMap from '../../hooks/useMap';
-import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Icon, Marker } from 'leaflet';
 import { Offers } from '../../types/offer';
 
 type MapProps = {
@@ -10,6 +10,7 @@ type MapProps = {
 };
 
 const DEFAULT_CITY = {
+  name: 'Amsterdam',
   lat: 52.374,
   lng: 4.88969
 };
