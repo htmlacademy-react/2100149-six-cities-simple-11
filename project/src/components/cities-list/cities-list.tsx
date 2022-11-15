@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { City } from '../../types/city';
 import { AppRoute, Cities } from '../../const';
 
 type CitiesListProps = {
   currentCity: string;
-  onCityChange: (currentCity: string) => void;
+  onCityChange: (currentCity: City) => void;
 }
 
 function CitiesList({currentCity, onCityChange}: CitiesListProps): JSX.Element {
@@ -21,7 +22,7 @@ function CitiesList({currentCity, onCityChange}: CitiesListProps): JSX.Element {
                 <Link
                   className={currentCity === city.name ? activeClassName : nonActiveClassName}
                   to={AppRoute.Main}
-                  onClick={() => onCityChange(city.name)}
+                  onClick={() => onCityChange(city)}
                 >
                   <span>{city.name}</span>
                 </Link>

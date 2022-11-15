@@ -3,22 +3,24 @@ import Logo from '../../components/logo/logo';
 import CitiesList from '../../components/cities-list/cities-list';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import Map from '../../components/map/map';
+import { City } from '../../types/city';
 import { Offers } from '../../types/offer';
-import { changeCity } from '../../store/action';
+import { changeCity, loadOffers } from '../../store/action';
 
 type MainScreenProps = {
   offers: Offers;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
 };
 
-function MainScreen({ offers, activeCard, onSelectCard }: MainScreenProps): JSX.Element {
+function MainScreen({ offers }: MainScreenProps): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
-  const currentOffers = offers.filter((offer) => offer.city === currentCity);
+  const currentOffers = offers.filter((offer) => offer.city === currentCity.name);
+  const activeCard = useAppSelector((state) => state.activeCard);
 
   const dispatch = useAppDispatch();
-  const onCityChangeHandler = (city: string) => {
+
+  const onCityChangeHandler = (city: City) => {
     dispatch(changeCity(city));
+    dispatch(loadOffers(offers.filter((offer) => offer.city === city.name)));
   };
 
   return (
@@ -49,12 +51,12 @@ function MainScreen({ offers, activeCard, onSelectCard }: MainScreenProps): JSX.
         </div>
       </header>
       <main className="page__main page__main--index">
-        <CitiesList currentCity={currentCity } onCityChange={onCityChangeHandler}/>
+        <CitiesList currentCity={currentCity.name } onCityChange={onCityChangeHandler}/>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
+              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,12 +73,12 @@ function MainScreen({ offers, activeCard, onSelectCard }: MainScreenProps): JSX.
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <RoomsList offers={currentOffers} activeCard={activeCard} onSelectCard={onSelectCard} className={'cities'} />
+                <RoomsList offers={currentOffers} className={'cities'} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={currentOffers} activeCard={activeCard} />
+                <Map offers={currentOffers} city={currentCity} activeCard={activeCard}/>
               </section>
             </div>
           </div>

@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeActiveCard } from '../../store/action';
 import { Offer } from '../../types/offer';
 
 type RoomCardProps = {
   offer: Offer;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
   className: string;
 };
 
-function RoomCard({offer, activeCard, onSelectCard, className}: RoomCardProps): JSX.Element {
+function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
 
-  const mouseOverHandler = () => onSelectCard(offer.id);
-  const mouseLeavehandler = () => onSelectCard('');
+  const mouseOverHandler = () => dispatch(changeActiveCard(offer.id));
+  const mouseLeavehandler = () => dispatch(changeActiveCard(''));
   const onClickHandler = () => window.scrollTo(0, 0);
 
   return (
@@ -22,7 +23,7 @@ function RoomCard({offer, activeCard, onSelectCard, className}: RoomCardProps): 
     >
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${activeCard}`} onClick ={onClickHandler}>
+        <Link to={`/offer/${useAppSelector((state) => state.activeCard)}`} onClick ={onClickHandler}>
           <img className="place-card__image" src={offer.photos[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -40,7 +41,7 @@ function RoomCard({offer, activeCard, onSelectCard, className}: RoomCardProps): 
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${activeCard}`} onClick={onClickHandler} >{offer.title}</Link>
+          <Link to={`/offer/${useAppSelector((state) => state.activeCard)}`} onClick={onClickHandler} >{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

@@ -3,22 +3,17 @@ import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 import { Icon, Marker } from 'leaflet';
 import { Offers } from '../../types/offer';
+import { City } from '../../types/city';
 
 type MapProps = {
   offers: Offers;
-  activeCard: string | undefined;
+  city: City;
+  activeCard: string;
 };
 
-const DEFAULT_CITY = {
-  name: 'Amsterdam',
-  lat: 52.374,
-  lng: 4.88969
-};
-
-function Map({offers, activeCard}: MapProps): JSX.Element {
+function Map({ offers, city, activeCard }: MapProps): JSX.Element {
   const mapRef = useRef(null);
-
-  const map = useMap(mapRef, DEFAULT_CITY);
+  const map = useMap(mapRef, city);
 
   const setMarkers = () => {
     const defaultCustomIcon = new Icon({
@@ -56,9 +51,20 @@ function Map({offers, activeCard}: MapProps): JSX.Element {
     return () => markers.forEach((marker) => marker.remove());
   };
 
-  useEffect(setMarkers, [map, offers, activeCard]);
+  const setMapView = () => {
+    if (map) {
+      map.setView({
+        lat: city.lat,
+        lng: city.lng
+      }, 12);
+    }
+  };
 
-  return <div style={{ height: '100%' }} ref={mapRef} />;
+  useEffect(setMarkers, [map, offers, city, activeCard]);
+
+  useEffect(setMapView, [map, city]);
+
+  return <div style={{ height: '100%' }} ref={mapRef}/>;
 }
 
 export default Map;
