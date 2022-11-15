@@ -1,27 +1,30 @@
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeCity, loadOffers } from '../../store/action';
+import { getActiveCard, getCity } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import CitiesList from '../../components/cities-list/cities-list';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import Map from '../../components/map/map';
 import { City } from '../../types/city';
 import { Offers } from '../../types/offer';
-import { changeCity, loadOffers } from '../../store/action';
 
 type MainScreenProps = {
   offers: Offers;
 };
 
 function MainScreen({ offers }: MainScreenProps): JSX.Element {
-  const currentCity = useAppSelector((state) => state.city);
+  const currentCity = useAppSelector(getCity);
   const currentOffers = offers.filter((offer) => offer.city === currentCity.name);
-  const activeCard = useAppSelector((state) => state.activeCard);
+  const activeCard = useAppSelector(getActiveCard);
 
   const dispatch = useAppDispatch();
 
-  const onCityChangeHandler = (city: City) => {
-    dispatch(changeCity(city));
-    dispatch(loadOffers(offers.filter((offer) => offer.city === city.name)));
-  };
+  const onCityChangeHandler = (city: City) => dispatch(changeCity(city));
+
+  useEffect(() => {
+    dispatch(loadOffers(offers.filter((offer) => offer.city === currentCity.name)));
+  }, [currentCity, offers]);
 
   return (
     <div className="page page--gray page--main">

@@ -7,13 +7,13 @@ import { Cities } from '../const';
 
 type InitialState = {
   city: City;
-  offers: Offers;
+  currentCityOffers: Offers;
   activeCard: string;
 };
 
 const initialState: InitialState = {
   city: Cities[0],
-  offers: [],
+  currentCityOffers: [],
   activeCard: '',
 };
 
@@ -23,7 +23,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.city = action.payload;
     })
     .addCase(loadOffers, (state, action: PayloadAction<Offers>) => {
-      state.offers = action.payload;
+      state.currentCityOffers = action.payload;
     })
     .addCase(changeActiveCard, (state, action: PayloadAction<string>) => {
       state.activeCard = action.payload;

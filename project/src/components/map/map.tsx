@@ -51,18 +51,18 @@ function Map({ offers, city, activeCard }: MapProps): JSX.Element {
     return () => markers.forEach((marker) => marker.remove());
   };
 
-  const setMapView = () => {
+  const setMap = () => {
     if (map) {
       map.setView({
         lat: city.lat,
         lng: city.lng
       }, 12);
+
+      setMarkers();
     }
   };
 
-  useEffect(setMarkers, [map, offers, city, activeCard]);
-
-  useEffect(setMapView, [map, city]);
+  useEffect(setMap, [map, offers, city, activeCard]);
 
   return <div style={{ height: '100%' }} ref={mapRef}/>;
 }

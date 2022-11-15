@@ -1,5 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { getActiveCard, getCity, getCurrentCityOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -13,11 +14,11 @@ import { AppRoute } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const params = useParams();
-  const currentCity = useAppSelector((state) => state.city);
-  const activeCard = useAppSelector((state) => state.activeCard);
-  const offers = useAppSelector((state) => state.offers);
-  const currentOffer = offers.find((offer) => offer.id === params.id);
-  const otherOffers = offers.filter((offer) => offer.id !== params.id);
+  const currentCity = useAppSelector(getCity);
+  const activeCard = useAppSelector(getActiveCard);
+  const currentCityOffers = useAppSelector(getCurrentCityOffers);
+  const currentOffer = currentCityOffers.find((offer) => offer.id === params.id);
+  const otherOffers = currentCityOffers.filter((offer) => offer.id !== params.id);
 
   if (!currentOffer) {
     return <Navigate to={AppRoute.NotFound} />;
