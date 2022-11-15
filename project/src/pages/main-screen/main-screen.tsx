@@ -1,16 +1,30 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeCity, loadOffers } from '../../store/action';
+import { getActiveCard, getCity } from '../../selectors';
 import Logo from '../../components/logo/logo';
+import CitiesList from '../../components/cities-list/cities-list';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import Map from '../../components/map/map';
+import { City } from '../../types/city';
 import { Offers } from '../../types/offer';
 
 type MainScreenProps = {
   offers: Offers;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
 };
 
-function MainScreen({offers, activeCard, onSelectCard}: MainScreenProps): JSX.Element {
+function MainScreen({ offers }: MainScreenProps): JSX.Element {
+  const currentCity = useAppSelector(getCity);
+  const currentOffers = offers.filter((offer) => offer.city === currentCity.name);
+  const activeCard = useAppSelector(getActiveCard);
 
+  const dispatch = useAppDispatch();
+
+  const onCityChangeHandler = (city: City) => dispatch(changeCity(city));
+
+  useEffect(() => {
+    dispatch(loadOffers(offers.filter((offer) => offer.city === currentCity.name)));
+  }, [currentCity, offers]);
 
   return (
     <div className="page page--gray page--main">
@@ -40,48 +54,12 @@ function MainScreen({offers, activeCard, onSelectCard}: MainScreenProps): JSX.El
         </div>
       </header>
       <main className="page__main page__main--index">
-        <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <CitiesList currentCity={currentCity.name } onCityChange={onCityChangeHandler}/>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -98,12 +76,12 @@ function MainScreen({offers, activeCard, onSelectCard}: MainScreenProps): JSX.El
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <RoomsList offers={offers} activeCard={activeCard} onSelectCard={onSelectCard} className={'cities'} />
+                <RoomsList offers={currentOffers} className={'cities'} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offers} activeCard={activeCard} />
+                <Map offers={currentOffers} city={currentCity} activeCard={activeCard}/>
               </section>
             </div>
           </div>

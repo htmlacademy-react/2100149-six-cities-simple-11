@@ -28,7 +28,6 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map |
       setMap(instance);
     }
     mapRef.current = null;
-
   };
 
   useEffect(getMap, [mapRef, map, city]);

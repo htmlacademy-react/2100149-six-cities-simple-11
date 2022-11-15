@@ -3,15 +3,13 @@ import { Offers } from '../../types/offer';
 
 type RoomsListProps = {
   offers: Offers;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
   className: string;
 };
 
-function RoomsList({offers, activeCard, onSelectCard, className}: RoomsListProps): JSX.Element {
+function RoomsList({offers, className}: RoomsListProps): JSX.Element {
   return (
     <>
-      {offers.map((offer) => <RoomCard key={offer.id} offer={offer} activeCard={activeCard} onSelectCard={onSelectCard} className={className} />)}
+      {offers.map((offer) => <RoomCard key={offer.id} offer={offer} className={className} />)}
     </>
   );
 }

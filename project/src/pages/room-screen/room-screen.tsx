@@ -1,4 +1,6 @@
-import { Navigate, useParams} from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
+import { getActiveCard, getCity, getCurrentCityOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -6,21 +8,17 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import ReviewForm from '../../components/review-form/review-form';
 import Map from '../../components/map/map';
 import RoomsList from '../../components/rooms-list/rooms-list';
-import { Offers } from '../../types/offer';
 import { Reviews } from '../../types/review';
 import { reviews } from '../../mocks/reviews';
 import { AppRoute } from '../../const';
 
-type RoomScreenProps = {
-  offers: Offers;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
-}
-
-function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.Element {
+function RoomScreen(): JSX.Element {
   const params = useParams();
-  const currentOffer = offers.find((offer) => offer.id === params.id);
-  const otherOffers = offers.filter((offer) => offer.id !== params.id);
+  const currentCity = useAppSelector(getCity);
+  const activeCard = useAppSelector(getActiveCard);
+  const currentCityOffers = useAppSelector(getCurrentCityOffers);
+  const currentOffer = currentCityOffers.find((offer) => offer.id === params.id);
+  const otherOffers = currentCityOffers.filter((offer) => offer.id !== params.id);
 
   if (!currentOffer) {
     return <Navigate to={AppRoute.NotFound} />;
@@ -122,14 +120,14 @@ function RoomScreen({ offers, activeCard, onSelectCard }: RoomScreenProps): JSX.
             </div>
           </div>
           <section className="property__map map">
-            <Map offers={otherOffers} activeCard={activeCard} />
+            <Map offers={otherOffers} city={currentCity} activeCard={activeCard}/>
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <RoomsList offers={otherOffers} activeCard={activeCard} onSelectCard={onSelectCard} className={'near-places'} />
+              <RoomsList offers={otherOffers} className={'near-places'} />
             </div>
           </section>
         </div>
