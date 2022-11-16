@@ -3,6 +3,7 @@ import { City } from './types/city';
 export enum AppRoute {
   Login = '/login',
   Main = '/',
+  MainEmpty = '/empty',
   Room = '/offer/:id',
   NotFound = '*'
 }
@@ -39,3 +40,10 @@ export const Cities: City[] = [
     lng: 6.776314,
   },
 ];
+
+export enum SortTypes {
+  Popular = 'Popular',
+  PriceToHigh = 'Price: low to high',
+  PriceToLow = 'Price: high to low',
+  TopRatedFirst = 'Top rated first'
+}

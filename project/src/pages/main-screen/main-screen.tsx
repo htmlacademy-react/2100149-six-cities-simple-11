@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity, loadOffers } from '../../store/action';
-import { getActiveCard, getCity } from '../../selectors';
+import { loadOffers } from '../../store/action';
+import { getCity, getSortType } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import CitiesList from '../../components/cities-list/cities-list';
+import SortForm from '../../components/sort-form/sort-form';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import Map from '../../components/map/map';
-import { City } from '../../types/city';
 import { Offers } from '../../types/offer';
+import { SortTypes, AppRoute } from '../../const';
 
 type MainScreenProps = {
   offers: Offers;
@@ -15,16 +17,33 @@ type MainScreenProps = {
 
 function MainScreen({ offers }: MainScreenProps): JSX.Element {
   const currentCity = useAppSelector(getCity);
-  const currentOffers = offers.filter((offer) => offer.city === currentCity.name);
-  const activeCard = useAppSelector(getActiveCard);
+
+  const getSortedOffers = (items: Offers, sortType: string) => {
+    switch (sortType) {
+      case SortTypes.Popular:
+        return items;
+      case SortTypes.PriceToHigh:
+        return items.sort((offerB, offerA) => offerB.price - offerA.price);
+      case SortTypes.PriceToLow:
+        return items.sort((offerB, offerA) => offerA.price - offerB.price);
+      case SortTypes.TopRatedFirst:
+        return items.sort((offerB, offerA) => offerA.rating - offerB.rating);
+    }
+  };
+
+  const currentOffers = getSortedOffers(offers.filter((offer) => offer.city === currentCity.name), useAppSelector(getSortType));
 
   const dispatch = useAppDispatch();
 
-  const onCityChangeHandler = (city: City) => dispatch(changeCity(city));
-
   useEffect(() => {
-    dispatch(loadOffers(offers.filter((offer) => offer.city === currentCity.name)));
+    if (currentOffers) {
+      dispatch(loadOffers(currentOffers));
+    }
   }, [currentCity, offers]);
+
+  if (!currentOffers || currentOffers.length === 0) {
+    return <Navigate to={AppRoute.MainEmpty} />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -54,34 +73,20 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
         </div>
       </header>
       <main className="page__main page__main--index">
-        <CitiesList currentCity={currentCity.name } onCityChange={onCityChangeHandler}/>
+        <CitiesList/>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <SortForm/>
               <div className="cities__places-list places__list tabs__content">
                 <RoomsList offers={currentOffers} className={'cities'} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={currentOffers} city={currentCity} activeCard={activeCard}/>
+                <Map/>
               </section>
             </div>
           </div>
