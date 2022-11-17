@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getActiveCard } from '../../selectors';
 import { changeActiveCard } from '../../store/action';
 import { Offer } from '../../types/offer';
 
@@ -23,7 +24,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
     >
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${useAppSelector((state) => state.activeCard)}`} onClick ={onClickHandler}>
+        <Link to={`/offer/${useAppSelector(getActiveCard)}`} onClick ={onClickHandler}>
           <img className="place-card__image" src={offer.photos[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -36,12 +37,12 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: `${20 * offer.rating}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${useAppSelector((state) => state.activeCard)}`} onClick={onClickHandler} >{offer.title}</Link>
+          <Link to={`/offer/${useAppSelector(getActiveCard)}`} onClick={onClickHandler} >{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

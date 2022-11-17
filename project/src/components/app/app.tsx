@@ -1,6 +1,7 @@
 import { Route, BrowserRouter, Routes} from 'react-router-dom';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
+import MainScreenEmpty from '../../pages/main-empty-screen/main-empty-screen';
 import RoomScreen from '../../pages/room-screen/room-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import { Offers } from '../../types/offer';
@@ -17,6 +18,10 @@ function App({ offers }: AppProps): JSX.Element {
         <Route
           path={AppRoute.Main}
           element={<MainScreen offers={offers}/>}
+        />
+        <Route
+          path={AppRoute.MainEmpty}
+          element={<MainScreenEmpty />}
         />
         <Route
           path={AppRoute.Login}

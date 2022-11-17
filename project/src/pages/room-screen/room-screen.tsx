@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getActiveCard, getCity, getCurrentCityOffers } from '../../selectors';
+import { getCurrentCityOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -14,8 +14,6 @@ import { AppRoute } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const params = useParams();
-  const currentCity = useAppSelector(getCity);
-  const activeCard = useAppSelector(getActiveCard);
   const currentCityOffers = useAppSelector(getCurrentCityOffers);
   const currentOffer = currentCityOffers.find((offer) => offer.id === params.id);
   const otherOffers = currentCityOffers.filter((offer) => offer.id !== params.id);
@@ -120,7 +118,7 @@ function RoomScreen(): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map offers={otherOffers} city={currentCity} activeCard={activeCard}/>
+            <Map/>
           </section>
         </section>
         <div className="container">
