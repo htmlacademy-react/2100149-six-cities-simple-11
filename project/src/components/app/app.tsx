@@ -1,23 +1,27 @@
-import { Route, BrowserRouter, Routes} from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
 import MainScreenEmpty from '../../pages/main-empty-screen/main-empty-screen';
 import RoomScreen from '../../pages/room-screen/room-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import { Offers } from '../../types/offer';
+import { useAppSelector } from '../../hooks';
+import { getOffersLoadingStatus } from '../../selectors';
 import { AppRoute } from '../../const';
 
-type AppProps = {
-  offers: Offers;
-}
+function App(): JSX.Element {
+  const isLoading = useAppSelector(getOffersLoadingStatus);
 
-function App({ offers }: AppProps): JSX.Element {
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen offers={offers}/>}
+          element={<MainScreen />}
         />
         <Route
           path={AppRoute.MainEmpty}

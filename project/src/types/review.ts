@@ -1,8 +1,8 @@
 export type Reviews = Review[];
 
 export type Review = {
-  id: string;
-  offerId: string;
+  id: number;
+  offerId: number;
   userName: string;
   userAvatar: string;
   reviewText: string;
