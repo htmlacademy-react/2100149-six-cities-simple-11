@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCurrentCityOffers } from '../../selectors';
+import { getOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -14,7 +14,7 @@ import { AppRoute } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const params = useParams();
-  const currentCityOffers = useAppSelector(getCurrentCityOffers);
+  const currentCityOffers = useAppSelector(getOffers);
   const currentOffer = currentCityOffers.find((offer) => offer.id.toString() === params.id);
   const otherOffers = currentCityOffers.filter((offer) => offer.id.toString() !== params.id);
 

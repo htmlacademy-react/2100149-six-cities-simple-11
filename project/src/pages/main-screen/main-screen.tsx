@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCity, getSortType, getCurrentCityOffers } from '../../selectors';
+import { getCity, getSortType, getOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import CitiesList from '../../components/cities-list/cities-list';
 import SortForm from '../../components/sort-form/sort-form';
@@ -25,7 +25,7 @@ function MainScreen(): JSX.Element {
     }
   };
 
-  const currentOffers = getSortedOffers(useAppSelector(getCurrentCityOffers).filter((offer) => offer.city.name === currentCity.name), useAppSelector(getSortType));
+  const currentOffers = getSortedOffers(useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name), useAppSelector(getSortType));
 
   if (!currentOffers || currentOffers.length === 0) {
     return <Navigate to={AppRoute.MainEmpty} />;

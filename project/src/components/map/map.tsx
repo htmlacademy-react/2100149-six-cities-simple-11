@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useAppSelector } from '../../hooks';
-import { getActiveCard, getCity, getCurrentCityOffers } from '../../selectors';
+import { getActiveCard, getCity, getOffers } from '../../selectors';
 import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 import { Icon, Marker } from 'leaflet';
@@ -8,7 +8,7 @@ import { Icon, Marker } from 'leaflet';
 function Map(): JSX.Element {
   const mapRef = useRef(null);
   const city = useAppSelector(getCity);
-  const offers = useAppSelector(getCurrentCityOffers);
+  const offers = useAppSelector(getOffers);
   const activeCard = useAppSelector(getActiveCard);
   const map = useMap(mapRef, city);
 

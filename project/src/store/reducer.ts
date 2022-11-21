@@ -6,21 +6,25 @@ import { Offers } from '../types/offer';
 import { Cities, SortTypes, AuthorizationStatus } from '../const';
 
 type InitialState = {
-  city: City;
-  currentCityOffers: Offers;
-  sortType: string;
-  activeCard: number | undefined;
-  isOffersLoading: boolean;
   authorizationStatus: AuthorizationStatus;
+  city: City;
+  offers: {
+    data: Offers;
+    isLoading: boolean;
+    sortType: string;
+  };
+  activeCard: number | undefined;
 };
 
 const initialState: InitialState = {
-  city: Cities[0],
-  currentCityOffers: [],
-  sortType: SortTypes.Popular,
-  activeCard: undefined,
-  isOffersLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
+  city: Cities[0],
+  offers: {
+    data: [],
+    isLoading: false,
+    sortType: SortTypes.Popular
+  },
+  activeCard: undefined,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -29,13 +33,13 @@ const reducer = createReducer(initialState, (builder) => {
       state.city = action.payload;
     })
     .addCase(loadOffers, (state, action: PayloadAction<Offers>) => {
-      state.currentCityOffers = action.payload;
+      state.offers.data = action.payload;
     })
     .addCase(setOffersLoadingStatus, (state, action: PayloadAction<boolean>) => {
-      state.isOffersLoading = action.payload;
+      state.offers.isLoading = action.payload;
     })
     .addCase(changeSortType, (state, action: PayloadAction<string>) => {
-      state.sortType = action.payload;
+      state.offers.sortType = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
