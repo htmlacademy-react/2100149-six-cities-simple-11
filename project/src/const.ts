@@ -8,6 +8,18 @@ export enum AppRoute {
   NotFound = '*'
 }
 
+export enum APIRoute {
+  Offers = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
+
 export const Cities: City[] = [
   {
     name: 'Paris',

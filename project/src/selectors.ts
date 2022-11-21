@@ -1,7 +1,7 @@
-import { City } from './types/city';
-import { Offers } from './types/offer';
+import { State } from './types/state';
 
-export const getCity = (state: { city: City }) => state.city;
-export const getCurrentCityOffers = (state: { currentCityOffers: Offers }) => state.currentCityOffers;
-export const getSortType = (state: { sortType: string }) => state.sortType;
-export const getActiveCard = (state: { activeCard: string }) => state.activeCard;
+export const getCity = (state: State) => state.city;
+export const getOffers = (state: State) => state.offers.data;
+export const getOffersLoadingStatus = (state: State) => state.offers.isLoading;
+export const getSortType = (state: State) => state.offers.sortType;
+export const getActiveCard = (state: State) => state.activeCard;

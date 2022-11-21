@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCurrentCityOffers } from '../../selectors';
+import { getOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
@@ -14,15 +14,15 @@ import { AppRoute } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const params = useParams();
-  const currentCityOffers = useAppSelector(getCurrentCityOffers);
-  const currentOffer = currentCityOffers.find((offer) => offer.id === params.id);
-  const otherOffers = currentCityOffers.filter((offer) => offer.id !== params.id);
+  const currentCityOffers = useAppSelector(getOffers);
+  const currentOffer = currentCityOffers.find((offer) => offer.id.toString() === params.id);
+  const otherOffers = currentCityOffers.filter((offer) => offer.id.toString() !== params.id);
 
   if (!currentOffer) {
     return <Navigate to={AppRoute.NotFound} />;
   }
 
-  const { id, title, description, isPremium, type, rating, bedroomsCount, guestsCount, price, features, photos, owner } = currentOffer;
+  const { id, title, description, isPremium, type, rating, bedrooms, maxAdults, price, goods, images, host } = currentOffer;
   const currentOfferReviews: Reviews = [];
   reviews.map((review) => review.offerId === id ? currentOfferReviews.push(review) : 0);
 
@@ -59,7 +59,7 @@ function RoomScreen(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {photos.map((photo) => <RoomPhoto key={photo} photo={photo} />)}
+              {images.map((image) => <RoomPhoto key={image} photo={image} />)}
             </div>
           </div>
           <div className="property__container container">
@@ -82,29 +82,29 @@ function RoomScreen(): JSX.Element {
                   {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {bedroomsCount} Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max {guestsCount} adults
+                  Max {maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
                 <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
-              <Features features={features} />
+              <Features features={goods} />
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={owner.avatar} width="74" height="74"
+                    <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74"
                       alt="Host avatar"
                     />
                   </div>
                   <span className="property__user-name">
-                    {owner.name}
+                    {host.name}
                   </span>
-                  {owner.isPro && <span className="property__user-status">Pro</span>}
+                  {host.isPro && <span className="property__user-status">Pro</span>}
                 </div>
                 <div className="property__description">
                   {description}

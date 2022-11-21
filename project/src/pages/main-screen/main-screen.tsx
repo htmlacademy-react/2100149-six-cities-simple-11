@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadOffers } from '../../store/action';
-import { getCity, getSortType } from '../../selectors';
+import { useAppSelector } from '../../hooks';
+import { getCity, getSortType, getOffers } from '../../selectors';
 import Logo from '../../components/logo/logo';
 import CitiesList from '../../components/cities-list/cities-list';
 import SortForm from '../../components/sort-form/sort-form';
@@ -11,11 +9,7 @@ import Map from '../../components/map/map';
 import { Offers } from '../../types/offer';
 import { SortTypes, AppRoute } from '../../const';
 
-type MainScreenProps = {
-  offers: Offers;
-};
-
-function MainScreen({ offers }: MainScreenProps): JSX.Element {
+function MainScreen(): JSX.Element {
   const currentCity = useAppSelector(getCity);
 
   const getSortedOffers = (items: Offers, sortType: string) => {
@@ -31,15 +25,7 @@ function MainScreen({ offers }: MainScreenProps): JSX.Element {
     }
   };
 
-  const currentOffers = getSortedOffers(offers.filter((offer) => offer.city === currentCity.name), useAppSelector(getSortType));
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (currentOffers) {
-      dispatch(loadOffers(currentOffers));
-    }
-  }, [currentCity, offers]);
+  const currentOffers = getSortedOffers(useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name), useAppSelector(getSortType));
 
   if (!currentOffers || currentOffers.length === 0) {
     return <Navigate to={AppRoute.MainEmpty} />;
