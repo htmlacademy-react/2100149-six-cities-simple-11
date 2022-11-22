@@ -15,7 +15,6 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
 
   const mouseOverHandler = () => dispatch(changeActiveCard(id));
   const mouseLeaveHandler = () => dispatch(changeActiveCard(undefined));
-  const onClickHandler = () => window.scrollTo(0, 0);
 
   return (
     <article
@@ -25,7 +24,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
     >
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`} onClick ={onClickHandler}>
+        <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -43,7 +42,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`} onClick={onClickHandler} >{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

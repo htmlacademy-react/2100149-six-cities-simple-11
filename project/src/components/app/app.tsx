@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -18,6 +19,7 @@ function App(): JSX.Element {
 
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <Routes>
         <Route
           path={AppRoute.Main}
