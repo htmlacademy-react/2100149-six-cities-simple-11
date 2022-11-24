@@ -1,12 +1,26 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
-import { changeActiveCard, changeSortType, changeCity, loadOffers, requireAuthorization, setOffersLoadingStatus } from './action';
+import {
+  changeActiveCard,
+  changeSortType,
+  changeCity,
+  loadOffers,
+  requireAuthorization,
+  loadUserData,
+  setOffersLoadingStatus,
+  setError
+} from './action';
+import { UserData } from '../types/user-data';
 import { City } from '../types/city';
 import { Offers } from '../types/offer';
 import { Cities, SortTypes, AuthorizationStatus } from '../const';
 
+
 type InitialState = {
-  authorizationStatus: AuthorizationStatus;
+  user: {
+    authorizationStatus: AuthorizationStatus;
+    userData: UserData | null;
+  };
   city: City;
   offers: {
     data: Offers;
@@ -14,10 +28,14 @@ type InitialState = {
     sortType: string;
   };
   activeCard: number | undefined;
+  error: string | null;
 };
 
 const initialState: InitialState = {
-  authorizationStatus: AuthorizationStatus.Unknown,
+  user: {
+    authorizationStatus: AuthorizationStatus.Unknown,
+    userData: null,
+  },
   city: Cities[0],
   offers: {
     data: [],
@@ -25,6 +43,7 @@ const initialState: InitialState = {
     sortType: SortTypes.Popular
   },
   activeCard: undefined,
+  error: null
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -42,10 +61,16 @@ const reducer = createReducer(initialState, (builder) => {
       state.offers.sortType = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
+      state.user.authorizationStatus = action.payload;
+    })
+    .addCase(loadUserData, (state, action: PayloadAction<UserData>) => {
+      state.user.userData = action.payload;
     })
     .addCase(changeActiveCard, (state, action: PayloadAction<number | undefined>) => {
       state.activeCard = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

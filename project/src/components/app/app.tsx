@@ -14,7 +14,16 @@ function App(): JSX.Element {
   const isLoading = useAppSelector(getOffersLoadingStatus);
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path={AppRoute.Main}
+            element={< LoadingScreen />}
+          />
+        </Routes>
+      </BrowserRouter>
+    );
   }
 
   return (

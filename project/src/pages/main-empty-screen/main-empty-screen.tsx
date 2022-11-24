@@ -1,6 +1,7 @@
 import { useAppSelector } from '../../hooks';
 import { getCity } from '../../selectors';
 import Logo from '../../components/logo/logo';
+import HeaderNav from '../../components/header-nav/header-nav';
 import CitiesList from '../../components/cities-list/cities-list';
 
 function MainScreenEmpty(): JSX.Element {
@@ -16,21 +17,7 @@ function MainScreenEmpty(): JSX.Element {
             <div className="header__left">
               <Logo/>
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <div className="header__nav-profile">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </div>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <HeaderNav/>
           </div>
         </div>
       </header>
