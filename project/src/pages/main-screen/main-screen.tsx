@@ -1,7 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCity, getSortType, getOffers } from '../../selectors';
+import { getCity, getSortType, getOffers, getOffersLoadingStatus } from '../../selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../../components/logo/logo';
+import HeaderNav from '../../components/header-nav/header-nav';
 import CitiesList from '../../components/cities-list/cities-list';
 import SortForm from '../../components/sort-form/sort-form';
 import RoomsList from '../../components/rooms-list/rooms-list';
@@ -10,8 +12,6 @@ import { Offers } from '../../types/offer';
 import { SortTypes, AppRoute } from '../../const';
 
 function MainScreen(): JSX.Element {
-  const currentCity = useAppSelector(getCity);
-
   const getSortedOffers = (items: Offers, sortType: string) => {
     switch (sortType) {
       case SortTypes.Popular:
@@ -25,9 +25,18 @@ function MainScreen(): JSX.Element {
     }
   };
 
-  const currentOffers = getSortedOffers(useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name), useAppSelector(getSortType));
+  const currentCity = useAppSelector(getCity);
+  const currentCityOffers = useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name);
+  const sortType = useAppSelector(getSortType);
+  const isLoading = useAppSelector(getOffersLoadingStatus);
 
-  if (!currentOffers || currentOffers.length === 0) {
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  const sortedOffers = getSortedOffers(currentCityOffers, sortType);
+
+  if (!sortedOffers) {
     return <Navigate to={AppRoute.MainEmpty} />;
   }
 
@@ -40,21 +49,7 @@ function MainScreen(): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <Logo/>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <div className="header__nav-profile">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </div>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <HeaderNav/>
           </div>
         </div>
       </header>
@@ -64,10 +59,10 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
+              <b className="places__found">{sortedOffers.length} places to stay in {currentCity.name}</b>
               <SortForm/>
               <div className="cities__places-list places__list tabs__content">
-                <RoomsList offers={currentOffers} className={'cities'} />
+                <RoomsList offers={sortedOffers} className={'cities'} />
               </div>
             </section>
             <div className="cities__right-section">

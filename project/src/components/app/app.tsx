@@ -1,23 +1,16 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import MainScreen from '../../pages/main-screen/main-screen';
 import MainScreenEmpty from '../../pages/main-empty-screen/main-empty-screen';
 import RoomScreen from '../../pages/room-screen/room-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import { useAppSelector } from '../../hooks';
-import { getOffersLoadingStatus } from '../../selectors';
 import { AppRoute } from '../../const';
 
 function App(): JSX.Element {
-  const isLoading = useAppSelector(getOffersLoadingStatus);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <Routes>
         <Route
           path={AppRoute.Main}

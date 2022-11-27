@@ -1,12 +1,23 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
-import { changeActiveCard, changeSortType, changeCity, loadOffers, requireAuthorization, setOffersLoadingStatus } from './action';
+import {
+  changeActiveCard,
+  changeSortType,
+  changeCity,
+  loadOffers,
+  requireAuthorization,
+  loadUserData,
+  setOffersLoadingStatus,
+} from './action';
+import { UserData } from '../types/user-data';
 import { City } from '../types/city';
 import { Offers } from '../types/offer';
 import { Cities, SortTypes, AuthorizationStatus } from '../const';
 
 type InitialState = {
-  authorizationStatus: AuthorizationStatus;
+  user: {
+    authorizationStatus: AuthorizationStatus;
+    userData: UserData | null;
+  };
   city: City;
   offers: {
     data: Offers;
@@ -17,7 +28,10 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-  authorizationStatus: AuthorizationStatus.Unknown,
+  user: {
+    authorizationStatus: AuthorizationStatus.Unknown,
+    userData: null,
+  },
   city: Cities[0],
   offers: {
     data: [],
@@ -29,22 +43,25 @@ const initialState: InitialState = {
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action: PayloadAction<City>) => {
+    .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(loadOffers, (state, action: PayloadAction<Offers>) => {
+    .addCase(loadOffers, (state, action) => {
       state.offers.data = action.payload;
     })
-    .addCase(setOffersLoadingStatus, (state, action: PayloadAction<boolean>) => {
+    .addCase(setOffersLoadingStatus, (state, action) => {
       state.offers.isLoading = action.payload;
     })
-    .addCase(changeSortType, (state, action: PayloadAction<string>) => {
+    .addCase(changeSortType, (state, action) => {
       state.offers.sortType = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
+      state.user.authorizationStatus = action.payload;
     })
-    .addCase(changeActiveCard, (state, action: PayloadAction<number | undefined>) => {
+    .addCase(loadUserData, (state, action) => {
+      state.user.userData = action.payload;
+    })
+    .addCase(changeActiveCard, (state, action) => {
       state.activeCard = action.payload;
     });
 });

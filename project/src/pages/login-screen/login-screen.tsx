@@ -1,6 +1,28 @@
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getCity } from '../../selectors';
+import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
+import { AppRoute } from '../../const';
 
 function LoginScreen(): JSX.Element {
+  const [authData, setAuthData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onSubmitHandler = (evt: FormEvent) => {
+    evt.preventDefault();
+    dispatch(loginAction(authData));
+    navigate(AppRoute.Main);
+  };
+
+  const onChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [evt.target.name]: evt.target.value });
+
   return (
     <div className="page page--gray page--login">
       <div style={{ display: 'none' }}>
@@ -17,23 +39,44 @@ function LoginScreen(): JSX.Element {
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" action="#" method="post">
+            <form
+              className="login__form form"
+              action="#"
+              method="post"
+              onSubmit={onSubmitHandler}
+            >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
-                <input className="login__input form__input" type="email" name="email" placeholder="Email" required={false}/>
+                <input
+                  value={authData.email}
+                  className="login__input form__input"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required={false}
+                  onChange={onChangeHandler}
+                />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
-                <input className="login__input form__input" type="password" name="password" placeholder="Password" required={false}/>
+                <input
+                  value={authData.password}
+                  className="login__input form__input"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required={false}
+                  onChange={onChangeHandler}
+                />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link to={AppRoute.Main} className="locations__item-link">
+                <span>{useAppSelector(getCity).name}</span>
+              </Link>
             </div>
           </section>
         </div>

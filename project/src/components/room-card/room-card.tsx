@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { changeActiveCard } from '../../store/action';
 import { Offer } from '../../types/offer';
+import { ONE_STAR_WIDTH } from '../../const';
 
 type RoomCardProps = {
   offer: Offer;
@@ -14,8 +15,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const mouseOverHandler = () => dispatch(changeActiveCard(id));
-  const mouseLeaveHandler = () => dispatch(changeActiveCard(undefined));
-  const onClickHandler = () => window.scrollTo(0, 0);
+  const mouseLeaveHandler = () => dispatch(changeActiveCard());
 
   return (
     <article
@@ -25,7 +25,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
     >
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`} onClick ={onClickHandler}>
+        <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -38,12 +38,12 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${20 * rating}%` }}></span>
+            <span style={{ width: `${ONE_STAR_WIDTH * Math.round(rating)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`} onClick={onClickHandler} >{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

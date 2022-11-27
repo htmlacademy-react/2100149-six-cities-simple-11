@@ -10,6 +10,7 @@ export enum AppRoute {
 
 export enum APIRoute {
   Offers = '/hotels',
+  Comments = '/comments',
   Login = '/login',
   Logout = '/logout',
 }
@@ -19,6 +20,8 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const ONE_STAR_WIDTH = 20;
 
 export const Cities: City[] = [
   {
