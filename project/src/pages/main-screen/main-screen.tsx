@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCity, getSortType, getOffers } from '../../selectors';
+import { getCity, getSortType, getOffers, getOffersLoadingStatus } from '../../selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../../components/logo/logo';
 import HeaderNav from '../../components/header-nav/header-nav';
 import CitiesList from '../../components/cities-list/cities-list';
@@ -11,8 +12,6 @@ import { Offers } from '../../types/offer';
 import { SortTypes, AppRoute } from '../../const';
 
 function MainScreen(): JSX.Element {
-  const currentCity = useAppSelector(getCity);
-
   const getSortedOffers = (items: Offers, sortType: string) => {
     switch (sortType) {
       case SortTypes.Popular:
@@ -26,13 +25,18 @@ function MainScreen(): JSX.Element {
     }
   };
 
-  const currentOffers = getSortedOffers(
-    useAppSelector(getOffers)
-      .filter((offer) => offer.city.name === currentCity.name),
-    useAppSelector(getSortType)
-  );
+  const currentCity = useAppSelector(getCity);
+  const currentCityOffers = useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name);
+  const sortType = useAppSelector(getSortType);
+  const isLoading = useAppSelector(getOffersLoadingStatus);
 
-  if (!currentOffers) {
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  const sortedOffers = getSortedOffers(currentCityOffers, sortType);
+
+  if (!sortedOffers) {
     return <Navigate to={AppRoute.MainEmpty} />;
   }
 
@@ -55,10 +59,10 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
+              <b className="places__found">{sortedOffers.length} places to stay in {currentCity.name}</b>
               <SortForm/>
               <div className="cities__places-list places__list tabs__content">
-                <RoomsList offers={currentOffers} className={'cities'} />
+                <RoomsList offers={sortedOffers} className={'cities'} />
               </div>
             </section>
             <div className="cities__right-section">

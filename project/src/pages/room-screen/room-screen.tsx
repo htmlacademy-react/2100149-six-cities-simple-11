@@ -10,7 +10,7 @@ import Map from '../../components/map/map';
 import RoomsList from '../../components/rooms-list/rooms-list';
 import { Reviews } from '../../types/review';
 import { reviews } from '../../mocks/reviews';
-import { AppRoute } from '../../const';
+import { AppRoute, ONE_STAR_WIDTH } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const params = useParams();
@@ -72,7 +72,7 @@ function RoomScreen(): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `${20 * rating}%` }}></span>
+                  <span style={{ width: `${ONE_STAR_WIDTH * Math.round(rating)}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">{rating}</span>

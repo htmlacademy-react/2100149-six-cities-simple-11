@@ -8,7 +8,6 @@ export const loadOffers = createAction('data/loadOffers', (value: Offers) => ({ 
 export const setOffersLoadingStatus = createAction('data/setOffersLoadingStatus', (value: boolean) => ({payload: value}));
 export const changeSortType = createAction('data/changeSortType', (value: string) => ({ payload: value }));
 export const changeCity = createAction('data/changeCity', (value: City) => ({ payload: value }));
-export const changeActiveCard = createAction('data/changeActiveCard', (value: number | undefined) => ({ payload: value }));
+export const changeActiveCard = createAction('data/changeActiveCard', (value?: number) => ({ payload: value }));
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const loadUserData = createAction('user/loadUserData', (value: UserData) => ({ payload: value }));
-export const setError = createAction<string | null>('app/setError');

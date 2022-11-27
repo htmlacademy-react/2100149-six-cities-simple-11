@@ -10,6 +10,7 @@ export enum AppRoute {
 
 export enum APIRoute {
   Offers = '/hotels',
+  Comments = '/comments',
   Login = '/login',
   Logout = '/logout',
 }
@@ -20,7 +21,7 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const TIMEOUT_SHOW_ERROR = 2000;
+export const ONE_STAR_WIDTH = 20;
 
 export const Cities: City[] = [
   {

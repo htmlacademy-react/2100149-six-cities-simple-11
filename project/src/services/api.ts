@@ -1,15 +1,7 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
-import { processErrorHandle } from './process-error-handle';
-
-const StatusCodeMapping: Record<number, boolean> = {
-  [StatusCodes.BAD_REQUEST]: true,
-  [StatusCodes.UNAUTHORIZED]: true,
-  [StatusCodes.NOT_FOUND]: true
-};
-
-const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
+import { toast } from 'react-toastify';
 
 const BACKEND_URL = 'https://11.react.pages.academy/six-cities-simple';
 const REQUEST_TIMEOUT = 5000;
@@ -35,8 +27,14 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<{ error: string }>) => {
-      if (error.response && shouldDisplayError(error.response)) {
-        processErrorHandle(error.response.data.error);
+      const ShownErrors = [
+        StatusCodes.BAD_REQUEST,
+        StatusCodes.UNAUTHORIZED,
+        StatusCodes.NOT_FOUND
+      ];
+
+      if (error.response && ShownErrors.includes(error.response.status)) {
+        toast.warn(error.response.data.error);
       }
 
       throw error;

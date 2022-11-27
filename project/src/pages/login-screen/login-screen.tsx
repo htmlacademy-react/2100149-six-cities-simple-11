@@ -1,34 +1,27 @@
-import { useRef, FormEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCity } from '../../selectors';
 import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
-import { AuthData } from '../../types/auth-data';
 import { AppRoute } from '../../const';
 
 function LoginScreen(): JSX.Element {
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [authData, setAuthData] = useState({
+    email: '',
+    password: '',
+  });
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (authData: AuthData) => {
+  const onSubmitHandler = (evt: FormEvent) => {
+    evt.preventDefault();
     dispatch(loginAction(authData));
     navigate(AppRoute.Main);
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
-    if (emailRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      });
-    }
-  };
+  const onChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [evt.target.name]: evt.target.value });
 
   return (
     <div className="page page--gray page--login">
@@ -50,27 +43,30 @@ function LoginScreen(): JSX.Element {
               className="login__form form"
               action="#"
               method="post"
-              onSubmit={handleSubmit}
+              onSubmit={onSubmitHandler}
             >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
-                  ref={emailRef}
+                  value={authData.email}
                   className="login__input form__input"
-                  type="email" name="email"
+                  type="email"
+                  name="email"
                   placeholder="Email"
                   required={false}
+                  onChange={onChangeHandler}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
-                  ref={passwordRef}
+                  value={authData.password}
                   className="login__input form__input"
                   type="password"
                   name="password"
                   placeholder="Password"
                   required={false}
+                  onChange={onChangeHandler}
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>

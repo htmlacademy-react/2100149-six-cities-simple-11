@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { changeActiveCard } from '../../store/action';
 import { Offer } from '../../types/offer';
+import { ONE_STAR_WIDTH } from '../../const';
 
 type RoomCardProps = {
   offer: Offer;
@@ -14,7 +15,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const mouseOverHandler = () => dispatch(changeActiveCard(id));
-  const mouseLeaveHandler = () => dispatch(changeActiveCard(undefined));
+  const mouseLeaveHandler = () => dispatch(changeActiveCard());
 
   return (
     <article
@@ -37,7 +38,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${20 * rating}%` }}></span>
+            <span style={{ width: `${ONE_STAR_WIDTH * Math.round(rating)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

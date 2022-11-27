@@ -1,5 +1,4 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
 import {
   changeActiveCard,
   changeSortType,
@@ -8,13 +7,11 @@ import {
   requireAuthorization,
   loadUserData,
   setOffersLoadingStatus,
-  setError
 } from './action';
 import { UserData } from '../types/user-data';
 import { City } from '../types/city';
 import { Offers } from '../types/offer';
 import { Cities, SortTypes, AuthorizationStatus } from '../const';
-
 
 type InitialState = {
   user: {
@@ -28,7 +25,6 @@ type InitialState = {
     sortType: string;
   };
   activeCard: number | undefined;
-  error: string | null;
 };
 
 const initialState: InitialState = {
@@ -43,34 +39,30 @@ const initialState: InitialState = {
     sortType: SortTypes.Popular
   },
   activeCard: undefined,
-  error: null
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action: PayloadAction<City>) => {
+    .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(loadOffers, (state, action: PayloadAction<Offers>) => {
+    .addCase(loadOffers, (state, action) => {
       state.offers.data = action.payload;
     })
-    .addCase(setOffersLoadingStatus, (state, action: PayloadAction<boolean>) => {
+    .addCase(setOffersLoadingStatus, (state, action) => {
       state.offers.isLoading = action.payload;
     })
-    .addCase(changeSortType, (state, action: PayloadAction<string>) => {
+    .addCase(changeSortType, (state, action) => {
       state.offers.sortType = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.user.authorizationStatus = action.payload;
     })
-    .addCase(loadUserData, (state, action: PayloadAction<UserData>) => {
+    .addCase(loadUserData, (state, action) => {
       state.user.userData = action.payload;
     })
-    .addCase(changeActiveCard, (state, action: PayloadAction<number | undefined>) => {
+    .addCase(changeActiveCard, (state, action) => {
       state.activeCard = action.payload;
-    })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
     });
 });
 
