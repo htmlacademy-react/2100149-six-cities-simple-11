@@ -4,13 +4,16 @@ import {
   changeSortType,
   changeCity,
   loadOffers,
+  loadCurrentOfferData,
   requireAuthorization,
   loadUserData,
   setOffersLoadingStatus,
+  setCurrentOfferLoadingStatus,
+  sendReview,
 } from './action';
 import { UserData } from '../types/user-data';
 import { City } from '../types/city';
-import { Offers } from '../types/offer';
+import { CurrentOfferData, Offers } from '../types/offer';
 import { Cities, SortTypes, AuthorizationStatus } from '../const';
 
 type InitialState = {
@@ -18,13 +21,14 @@ type InitialState = {
     authorizationStatus: AuthorizationStatus;
     userData: UserData | null;
   };
-  city: City;
+  activeCity: City;
+  activeCard: number | undefined;
   offers: {
     data: Offers;
     isLoading: boolean;
     sortType: string;
   };
-  activeCard: number | undefined;
+  currentOffer: CurrentOfferData;
 };
 
 const initialState: InitialState = {
@@ -32,25 +36,40 @@ const initialState: InitialState = {
     authorizationStatus: AuthorizationStatus.Unknown,
     userData: null,
   },
-  city: Cities[0],
+  activeCity: Cities[0],
+  activeCard: undefined,
   offers: {
     data: [],
     isLoading: false,
     sortType: SortTypes.Popular
   },
-  activeCard: undefined,
+  currentOffer: {
+    offer: null,
+    reviews: [],
+    nearbyOffers: [],
+    isLoading: false,
+  }
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action) => {
-      state.city = action.payload;
-    })
     .addCase(loadOffers, (state, action) => {
       state.offers.data = action.payload;
     })
     .addCase(setOffersLoadingStatus, (state, action) => {
       state.offers.isLoading = action.payload;
+    })
+    .addCase(loadCurrentOfferData, (state, action) => {
+      state.currentOffer = action.payload;
+    })
+    .addCase(setCurrentOfferLoadingStatus, (state, action) => {
+      state.currentOffer.isLoading = action.payload;
+    })
+    .addCase(changeActiveCard, (state, action) => {
+      state.activeCard = action.payload;
+    })
+    .addCase(changeCity, (state, action) => {
+      state.activeCity = action.payload;
     })
     .addCase(changeSortType, (state, action) => {
       state.offers.sortType = action.payload;
@@ -61,8 +80,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadUserData, (state, action) => {
       state.user.userData = action.payload;
     })
-    .addCase(changeActiveCard, (state, action) => {
-      state.activeCard = action.payload;
+    .addCase(sendReview, (state, action) => {
+      state.currentOffer.reviews = action.payload;
     });
 });
 

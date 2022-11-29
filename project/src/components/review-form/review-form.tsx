@@ -1,22 +1,39 @@
-import { SetStateAction, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { sendReviewAction } from '../../store/api-actions';
 import RatingInput from '../rating-input/rating-input';
 
-function ReviewForm(): JSX.Element {
-  const [reviewText, setReviewText] = useState('');
+type ReviewFormProps = {
+  offerId: number;
+}
 
-  const changeReviewTextHandler = (evt: { target: { value: SetStateAction<string> } }) => setReviewText(evt.target.value);
+function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
+  const [formData, setFormData] = useState({
+    id: String(offerId),
+    comment: '',
+    rating: 0
+  });
+
+  const dispatch = useAppDispatch();
+
+  const changeReviewHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setFormData({ ...formData, [evt.target.name]: evt.target.value });
+
+  const onSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(sendReviewAction(formData));
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form onSubmit={onSubmitHandler} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <RatingInput/>
+      <RatingInput onChangeHandler={changeReviewHandler} />
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
-        value={reviewText}
+        name="comment"
+        value={formData.comment}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={changeReviewTextHandler}
+        onChange={changeReviewHandler}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -24,7 +41,7 @@ function ReviewForm(): JSX.Element {
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your
           stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" >Submit</button>
       </div>
     </form>
   );

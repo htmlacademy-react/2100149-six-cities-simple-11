@@ -1,30 +1,42 @@
+import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchCurrentOfferDataAction } from '../../store/api-actions';
+import { getCurrentOfferData, getUserData } from '../../selectors';
 import Logo from '../../components/logo/logo';
+import HeaderNav from '../../components/header-nav/header-nav';
 import RoomPhoto from '../../components/room-photo/room-photo';
 import Features from '../../components/features/features';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import ReviewForm from '../../components/review-form/review-form';
 import Map from '../../components/map/map';
 import RoomsList from '../../components/rooms-list/rooms-list';
-import { Reviews } from '../../types/review';
-import { reviews } from '../../mocks/reviews';
-import { AppRoute, ONE_STAR_WIDTH } from '../../const';
+import { AppRoute, AuthorizationStatus, ONE_STAR_WIDTH } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function RoomScreen(): JSX.Element {
-  const params = useParams();
-  const currentCityOffers = useAppSelector(getOffers);
-  const currentOffer = currentCityOffers.find((offer) => offer.id.toString() === params.id);
-  const otherOffers = currentCityOffers.filter((offer) => offer.id.toString() !== params.id);
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
 
-  if (!currentOffer) {
+  const isLogged = useAppSelector(getUserData).authorizationStatus === AuthorizationStatus.Auth;
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCurrentOfferDataAction(id));
+    }
+  }, [id, dispatch]);
+
+  const { offer, reviews, nearbyOffers, isLoading } = useAppSelector(getCurrentOfferData);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!offer) {
     return <Navigate to={AppRoute.NotFound} />;
   }
 
-  const { id, title, description, isPremium, type, rating, bedrooms, maxAdults, price, goods, images, host } = currentOffer;
-  const currentOfferReviews: Reviews = [];
-  reviews.map((review) => review.offerId === id ? currentOfferReviews.push(review) : 0);
+  const { title, description, isPremium, type, rating, bedrooms, maxAdults, price, goods, images, host } = offer;
 
   return (
     <div className="page">
@@ -36,25 +48,10 @@ function RoomScreen(): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <Logo />
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <div className="header__nav-profile">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </div>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <HeaderNav/>
           </div>
         </div>
       </header>
-
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -111,9 +108,9 @@ function RoomScreen(): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{currentOfferReviews.length}</span></h2>
-                <ReviewsList reviews={currentOfferReviews} />
-                <ReviewForm />
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <ReviewsList reviews={reviews} />
+                {isLogged && <ReviewForm offerId={offer.id} />}
               </section>
             </div>
           </div>
@@ -125,7 +122,7 @@ function RoomScreen(): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <RoomsList offers={otherOffers} className={'near-places'} />
+              <RoomsList offers={nearbyOffers} className={'near-places'} />
             </div>
           </section>
         </div>

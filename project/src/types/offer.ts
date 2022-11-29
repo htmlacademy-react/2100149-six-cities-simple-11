@@ -1,3 +1,12 @@
+import { Reviews } from './review';
+
+export type CurrentOfferData = {
+  offer: Offer | null;
+  reviews: Reviews;
+  nearbyOffers: Offers;
+  isLoading: boolean;
+};
+
 export type Offers = Offer[];
 
 export type Offer = {
