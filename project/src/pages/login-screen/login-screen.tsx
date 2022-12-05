@@ -1,10 +1,11 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCity } from '../../selectors';
+import { getCity } from '../../store/action-process/selectors';
 import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
 import { AppRoute } from '../../const';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function LoginScreen(): JSX.Element {
   const [authData, setAuthData] = useState({
@@ -15,13 +16,19 @@ function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const isLogged = useAppSelector(getAuthorizationStatus);
+
+  if (isLogged) {
+    navigate(AppRoute.Main);
+  }
+
   const onSubmitHandler = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(loginAction(authData));
     navigate(AppRoute.Main);
   };
 
-  const onChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [evt.target.name]: evt.target.value });
+  const onChangeHandler = ({target}: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [target.name]: target.value });
 
   return (
     <div className="page page--gray page--login">

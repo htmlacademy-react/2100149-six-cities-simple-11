@@ -1,13 +1,16 @@
 import { Reviews } from './review';
 
+export type Offers = Offer[];
+
 export type CurrentOfferData = {
   offer: Offer | null;
-  reviews: Reviews;
+  reviews: {
+    data: Reviews;
+    isSending: boolean;
+  };
   nearbyOffers: Offers;
   isLoading: boolean;
-};
-
-export type Offers = Offer[];
+}
 
 export type Offer = {
   bedrooms: number;

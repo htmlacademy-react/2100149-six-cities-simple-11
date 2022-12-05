@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getCity, getSortType, getOffers, getOffersLoadingStatus } from '../../selectors';
+import { getOffersData } from '../../store/data-process/selectors';
+import { getCity, getSortType } from '../../store/action-process/selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../../components/logo/logo';
 import HeaderNav from '../../components/header-nav/header-nav';
@@ -26,9 +27,9 @@ function MainScreen(): JSX.Element {
   };
 
   const currentCity = useAppSelector(getCity);
-  const currentCityOffers = useAppSelector(getOffers).filter((offer) => offer.city.name === currentCity.name);
+  const { data , isLoading } = useAppSelector(getOffersData);
+  const currentCityOffers = data.filter((offer) => offer.city.name === currentCity.name);
   const sortType = useAppSelector(getSortType);
-  const isLoading = useAppSelector(getOffersLoadingStatus);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -67,7 +68,7 @@ function MainScreen(): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map/>
+                <Map offers={ currentCityOffers } />
               </section>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import Logo from '../../components/logo/logo';
 import HeaderNav from '../../components/header-nav/header-nav';
 import CitiesList from '../../components/cities-list/cities-list';
-import Map from '../../components/map/map';
 import './loading.css';
 
 function LoadingScreen(): JSX.Element {
@@ -24,17 +23,8 @@ function LoadingScreen(): JSX.Element {
         <CitiesList/>
         <div className="cities">
           <div className="cities__places-container container">
-            <section className="cities__places places">
-              <div className="cities__places-list places__list tabs__content">
-                <div className="spinner_wrapper">
-                  {Array.from({ length: SPINNER_BLOCKS_COUNT }, (item, index) => <div key={`item${index}`} className="spinner_block"></div>)}
-                </div>
-              </div>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map/>
-              </section>
+            <div className="spinner_wrapper">
+              {Array.from({ length: SPINNER_BLOCKS_COUNT }, (item, index) => <div key={`item${index}`} className="spinner_block"></div>)}
             </div>
           </div>
         </div>

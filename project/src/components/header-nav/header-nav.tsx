@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getUserData } from '../../selectors';
 import { logoutAction } from '../../store/api-actions';
+import { getAuthorizationStatus, getUserData } from '../../store/user-process/selectors';
 
 function HeaderNav(): JSX.Element {
-  const { authorizationStatus, userData } = useAppSelector(getUserData);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const userData = useAppSelector(getUserData);
 
   const dispatch = useAppDispatch();
 
