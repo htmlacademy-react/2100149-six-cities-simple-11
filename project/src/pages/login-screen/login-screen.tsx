@@ -1,11 +1,11 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getCity } from '../../store/action-process/selectors';
 import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
-import { AppRoute } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { AppRoute, AuthorizationStatus } from '../../const';
 
 function LoginScreen(): JSX.Element {
   const [authData, setAuthData] = useState({
@@ -16,7 +16,7 @@ function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const isLogged = useAppSelector(getAuthorizationStatus);
+  const isLogged = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
 
   if (isLogged) {
     navigate(AppRoute.Main);
@@ -60,7 +60,7 @@ function LoginScreen(): JSX.Element {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  required={false}
+                  required
                   onChange={onChangeHandler}
                 />
               </div>
@@ -72,7 +72,7 @@ function LoginScreen(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  required={false}
+                  required
                   onChange={onChangeHandler}
                 />
               </div>

@@ -1,12 +1,11 @@
 import { ChangeEvent, Fragment } from 'react';
+import { MAX_RATING } from '../../const';
 
 type RatingInputProps = {
   onChangeHandler: (evt: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function RatingInput({ onChangeHandler }: RatingInputProps): JSX.Element {
-  const MAX_RATING = 5;
-
   const ratingTitles = [
     'perfect',
     'good',

@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { Fragment } from 'react';
-import { ONE_STAR_WIDTH } from '../../const';
+import { humanizeDate } from '../../utils';
+import { ONE_STAR_WIDTH, REVIEWS_COUNT } from '../../const';
 import { Reviews } from '../../types/review';
 
 type ReviewProps = {
@@ -10,7 +10,7 @@ type ReviewProps = {
 function ReviewsList({ reviews }: ReviewProps): JSX.Element {
   return (
     <ul className="reviews__list">
-      {reviews.map((review) => (
+      {reviews.map((review, index) => index < REVIEWS_COUNT && (
         <Fragment key={review.id} >
           <li className="reviews__item">
             <div className="reviews__user user">
@@ -33,7 +33,7 @@ function ReviewsList({ reviews }: ReviewProps): JSX.Element {
               <p className="reviews__text">
                 {review.comment}
               </p>
-              <time className="reviews__time" dateTime={review.date}>{dayjs(review.date).format('MMMM YYYY')}</time>
+              <time className="reviews__time" dateTime={review.date}>{humanizeDate(review.date)}</time>
             </div>
           </li>
         </Fragment>

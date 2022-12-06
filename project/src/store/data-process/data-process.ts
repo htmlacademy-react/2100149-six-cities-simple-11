@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchOffersAction, fetchCurrentOfferDataAction, sendReviewAction } from '../api-actions';
+import { sortReviews } from '../../utils';
 import { NameSpace } from '../../const';
 import { OffersData } from '../../types/state';
-import { fetchOffersAction, fetchCurrentOfferDataAction, sendReviewAction} from '../api-actions';
 
 const initialState: OffersData = {
   offers: {
@@ -37,12 +38,13 @@ export const dataProcess = createSlice({
       })
       .addCase(fetchCurrentOfferDataAction.fulfilled, (state, action) => {
         state.currentOffer = action.payload;
+        sortReviews(state.currentOffer.reviews.data);
       })
       .addCase(sendReviewAction.pending, (state) => {
         state.currentOffer.reviews.isSending = true;
       })
       .addCase(sendReviewAction.fulfilled, (state, action) => {
-        state.currentOffer.reviews.data = action.payload;
+        state.currentOffer.reviews.data = sortReviews(action.payload);
         state.currentOffer.reviews.isSending = false;
       });
   }

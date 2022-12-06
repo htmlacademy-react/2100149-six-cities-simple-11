@@ -13,7 +13,7 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import ReviewForm from '../../components/review-form/review-form';
 import Map from '../../components/map/map';
 import RoomsList from '../../components/rooms-list/rooms-list';
-import { AppRoute, AuthorizationStatus, ONE_STAR_WIDTH } from '../../const';
+import { AppRoute, AuthorizationStatus, ONE_STAR_WIDTH, IMAGES_COUNT } from '../../const';
 
 function RoomScreen(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -39,8 +39,6 @@ function RoomScreen(): JSX.Element {
   }
 
   const { title, description, isPremium, type, rating, bedrooms, maxAdults, price, goods, images, host } = offer;
-
-  const IMAGES_COUNT = 6;
 
   return (
     <div className="page">
