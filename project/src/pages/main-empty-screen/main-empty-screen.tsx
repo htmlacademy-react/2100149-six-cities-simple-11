@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../hooks';
-import { getCity } from '../../selectors';
+import { getCity } from '../../store/action-process/selectors';
 import Logo from '../../components/logo/logo';
 import HeaderNav from '../../components/header-nav/header-nav';
 import CitiesList from '../../components/cities-list/cities-list';

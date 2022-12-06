@@ -1,5 +1,3 @@
-import { City } from './types/city';
-
 export enum AppRoute {
   Login = '/login',
   Main = '/',
@@ -21,38 +19,60 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum NameSpace {
+  User = 'USER',
+  Data = 'DATA',
+  Action = 'ACTION'
+}
+
 export const ONE_STAR_WIDTH = 20;
 
-export const Cities: City[] = [
+export const IMAGES_COUNT = 6;
+
+export const REVIEWS_COUNT = 10;
+
+export const MAX_RATING = 5;
+
+export const MIN_REVIEW_LENGTH = 50;
+
+export const MAX_REVIEW_LENGTH = 300;
+
+export const Cities = [
   {
     name: 'Paris',
     lat: 48.85661,
     lng: 2.351499,
+    zoom: 12
   },
   {
     name: 'Cologne',
     lat: 50.938361,
     lng: 6.959974,
+    zoom: 12
   },
   {
     name: 'Brussels',
     lat: 50.846557,
     lng: 4.351697,
+    zoom: 12
   },
   {
     name: 'Amsterdam',
     lat: 52.374,
     lng: 4.88969,
+    zoom: 12
   },
   {
     name: 'Hamburg',
     lat: 53.550341,
     lng: 10.000654,
+    zoom: 12
   },
   {
     name: 'Dusseldorf',
     lat: 51.225402,
     lng: 6.776314,
+    zoom: 12
   },
 ];
 

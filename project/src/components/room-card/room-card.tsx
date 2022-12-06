@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
-import { changeActiveCard } from '../../store/action';
+import { changeActiveCard } from '../../store/action-process/action-process';
 import { Offer } from '../../types/offer';
-import { ONE_STAR_WIDTH } from '../../const';
+import { AppRoute, ONE_STAR_WIDTH } from '../../const';
 
 type RoomCardProps = {
   offer: Offer;
@@ -10,9 +10,11 @@ type RoomCardProps = {
 };
 
 function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
-  const { id, previewImage, price, rating, title, type } = offer;
-
   const dispatch = useAppDispatch();
+
+  const { id, previewImage, price, rating, title, type, isPremium } = offer;
+
+  const linkPath = generatePath(AppRoute.Room, { id: String(id) });
 
   const mouseOverHandler = () => dispatch(changeActiveCard(id));
   const mouseLeaveHandler = () => dispatch(changeActiveCard());
@@ -20,12 +22,12 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
   return (
     <article
       className={`${className}__card place-card`}
-      onMouseOver={mouseOverHandler}
-      onMouseLeave={mouseLeaveHandler}
+      onMouseOver={className !== 'near-places' ? mouseOverHandler : undefined}
+      onMouseLeave={className !== 'near-places' ? mouseLeaveHandler : undefined}
     >
-      {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
+      {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`}>
+        <Link to={linkPath}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -43,7 +45,7 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={linkPath}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

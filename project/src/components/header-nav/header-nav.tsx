@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getUserData } from '../../selectors';
 import { logoutAction } from '../../store/api-actions';
+import { getAuthorizationStatus, getUserData } from '../../store/user-process/selectors';
 
 function HeaderNav(): JSX.Element {
-  const { authorizationStatus, userData } = useAppSelector(getUserData);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const userData = useAppSelector(getUserData);
 
   const dispatch = useAppDispatch();
 
@@ -34,7 +35,7 @@ function HeaderNav(): JSX.Element {
         <li className="header__nav-item user">
           <div className="header__nav-profile">
             <div className="header__avatar-wrapper user__avatar-wrapper">
-              <img src={userData.avatarUrl} alt="User avatar" />
+              <img src={userData.avatarUrl} style={{ 'borderRadius': '50%' }} alt="User avatar" />
             </div>
             <span className="header__user-name user__name">{userData.email}</span>
           </div>

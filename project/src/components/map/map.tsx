@@ -1,18 +1,22 @@
 import { useRef, useEffect } from 'react';
 import { useAppSelector } from '../../hooks';
-import { getActiveCard, getCity, getOffers } from '../../selectors';
+import { getActiveCard, getCity } from '../../store/action-process/selectors';
 import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 import { Icon, Marker } from 'leaflet';
+import { Offers } from '../../types/offer';
 
-function Map(): JSX.Element {
+type MapProps = {
+  offers: Offers;
+}
+
+function Map({ offers }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const city = useAppSelector(getCity);
-  const offers = useAppSelector(getOffers);
   const activeCard = useAppSelector(getActiveCard);
   const map = useMap(mapRef, city);
 
-  const setMarkers = () => {
+  const setMap = () => {
     const defaultCustomIcon = new Icon({
       iconUrl: '/img/pin.svg',
       iconSize: [40, 40],
@@ -28,6 +32,11 @@ function Map(): JSX.Element {
     const markers: Marker[] = [];
 
     if (map) {
+      map.setView({
+        lat: city.lat,
+        lng: city.lng
+      });
+
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -43,19 +52,8 @@ function Map(): JSX.Element {
           )
           .addTo(map);
       });
-    }
 
-    return () => markers.forEach((marker) => marker.remove());
-  };
-
-  const setMap = () => {
-    if (map) {
-      map.setView({
-        lat: city.lat,
-        lng: city.lng
-      }, 12);
-
-      setMarkers();
+      return () => markers.forEach((marker) => marker.remove());
     }
   };
 

@@ -1,10 +1,11 @@
 import { ChangeEvent, Fragment } from 'react';
+import { MAX_RATING } from '../../const';
 
 type RatingInputProps = {
   onChangeHandler: (evt: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function RatingInput({onChangeHandler}: RatingInputProps): JSX.Element {
+function RatingInput({ onChangeHandler }: RatingInputProps): JSX.Element {
   const ratingTitles = [
     'perfect',
     'good',
@@ -21,11 +22,11 @@ function RatingInput({onChangeHandler}: RatingInputProps): JSX.Element {
             onChange={onChangeHandler}
             className="form__rating-input visually-hidden"
             name="rating"
-            value={5 - index}
-            id={`${5 - index}-stars`}
+            value={MAX_RATING - index}
+            id={`${MAX_RATING - index}-stars`}
             type="radio"
           />
-          <label htmlFor={`${5 - index}-stars`} className="reviews__rating-label form__rating-label" title={title}>
+          <label htmlFor={`${MAX_RATING - index}-stars`} className="reviews__rating-label form__rating-label" title={title}>
             <svg className="form__star-image" width="37" height="33">
               <use xlinkHref="#icon-star"></use>
             </svg>
