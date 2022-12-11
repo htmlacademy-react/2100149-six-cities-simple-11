@@ -74,6 +74,8 @@ function LoginScreen(): JSX.Element {
                   placeholder="Password"
                   required
                   onChange={onChangeHandler}
+                  pattern="^(?=.*\d)(?=.*[A-Za-z])([A-Za-z0-9]+)$"
+                  title="Password must contain at least one letter and one number"
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>

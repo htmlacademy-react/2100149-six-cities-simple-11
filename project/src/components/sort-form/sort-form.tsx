@@ -6,12 +6,14 @@ import { SortTypes } from '../../const';
 
 function SortForm(): JSX.Element {
   const dispatch = useAppDispatch();
+
   const [isOpened, setOpenedState] = useState(false);
+
   const sortType = useAppSelector(getSortType);
 
-  const onSortListClickHandler = () => setOpenedState(!isOpened);
+  const handleSortListClick = () => setOpenedState(!isOpened);
 
-  const onSortTypeChangeHandler = (type: SortTypes) => {
+  const handleSortTypeChange = (type: SortTypes) => {
     dispatch(changeSortType(type));
     setOpenedState(false);
   };
@@ -19,7 +21,7 @@ function SortForm(): JSX.Element {
   return (
     <form className="places__sorting" action="#" method="get" >
       <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type" tabIndex={0} onClick={onSortListClickHandler}>
+      <span className="places__sorting-type" tabIndex={0} onClick={handleSortListClick}>
         {sortType}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
@@ -31,7 +33,7 @@ function SortForm(): JSX.Element {
             key={type}
             className={`places__option ${type === sortType ? 'places__option--active' : ''}`}
             tabIndex={0}
-            onClick={() => onSortTypeChangeHandler(type)}
+            onClick={() => handleSortTypeChange(type)}
           >
             {type}
           </li>))}
