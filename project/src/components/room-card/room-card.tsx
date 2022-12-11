@@ -16,14 +16,14 @@ function RoomCard({ offer, className }: RoomCardProps): JSX.Element {
 
   const linkPath = generatePath(AppRoute.Room, { id: String(id) });
 
-  const mouseOverHandler = () => dispatch(changeActiveCard(id));
-  const mouseLeaveHandler = () => dispatch(changeActiveCard());
+  const handleCardMouseOver = () => dispatch(changeActiveCard(id));
+  const handleCardMouseLeave = () => dispatch(changeActiveCard());
 
   return (
     <article
       className={`${className}__card place-card`}
-      onMouseOver={className !== 'near-places' ? mouseOverHandler : undefined}
-      onMouseLeave={className !== 'near-places' ? mouseLeaveHandler : undefined}
+      onMouseOver={className !== 'near-places' ? handleCardMouseOver : undefined}
+      onMouseLeave={className !== 'near-places' ? handleCardMouseLeave : undefined}
     >
       {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>

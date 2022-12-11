@@ -10,11 +10,11 @@ function HeaderNav(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const onClickHandler = () => {
+  const handleSignOutClick = () => {
     dispatch(logoutAction());
   };
 
-  if (authorizationStatus === AuthorizationStatus.NoAuth || !userData) {
+  if (authorizationStatus !== AuthorizationStatus.Auth || !userData) {
     return (
       <nav className="header__nav">
         <ul className="header__nav-list">
@@ -41,7 +41,7 @@ function HeaderNav(): JSX.Element {
           </div>
         </li>
         <li className="header__nav-item">
-          <Link to={AppRoute.Main} className="header__nav-link" onClick ={onClickHandler}>
+          <Link to={AppRoute.Main} className="header__nav-link" onClick={handleSignOutClick}>
             <span className="header__signout">Sign out</span>
           </Link>
         </li>

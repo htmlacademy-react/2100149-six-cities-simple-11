@@ -23,24 +23,24 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const changeReviewHandler = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setFormData({ ...formData, [target.name]: target.value });
+  const handleInputChange = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setFormData({ ...formData, [target.name]: target.value });
 
-  const onSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(sendReviewAction(formData));
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className="reviews__form form" action="#" method="post">
+    <form onSubmit={handleFormSubmit} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <RatingInput onChangeHandler={changeReviewHandler} />
+      <RatingInput onChangeHandler={handleInputChange} />
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
         name="comment"
         value={formData.comment}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={changeReviewHandler}
+        onChange={handleInputChange}
       >
       </textarea>
       <div className="reviews__button-wrapper">

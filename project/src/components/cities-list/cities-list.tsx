@@ -8,7 +8,7 @@ import { AppRoute, Cities } from '../../const';
 function CitiesList(): JSX.Element {
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector(getCity);
-  const onCityChangeHandler = (city: City) => dispatch(changeCity(city));
+  const handleCityClick = (city: City) => dispatch(changeCity(city));
 
   return (
     <>
@@ -23,7 +23,7 @@ function CitiesList(): JSX.Element {
                     ? 'locations__item-link tabs__item tabs__item--active'
                     : 'locations__item-link tabs__item'}
                   to={AppRoute.Main}
-                  onClick={() => onCityChangeHandler(city)}
+                  onClick={() => handleCityClick(city)}
                 >
                   <span>{city.name}</span>
                 </Link>
