@@ -1,9 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { getCurrentOfferData } from '../../store/data-process/selectors';
 import RatingInput from '../rating-input/rating-input';
-import { MIN_REVIEW_LENGTH, MAX_REVIEW_LENGTH } from '../../const';
+import { ReviewLength, ReviewSendingStatus } from '../../const';
 
 type ReviewFormProps = {
   offerId: number;
@@ -17,9 +17,9 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
   });
 
   const currentOffer = useAppSelector(getCurrentOfferData);
-  const { reviews: { isSending } } = currentOffer;
+  const { reviews: { sendingStatus } } = currentOffer;
 
-  const isFormValid = formData.rating > 0 && formData.comment.length > MIN_REVIEW_LENGTH && formData.comment.length < MAX_REVIEW_LENGTH;
+  const isFormValid = formData.rating > 0 && formData.comment.length > ReviewLength.Min && formData.comment.length < ReviewLength.Max;
 
   const dispatch = useAppDispatch();
 
@@ -29,6 +29,12 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
     evt.preventDefault();
     dispatch(sendReviewAction(formData));
   };
+
+  useEffect(() => {
+    if (sendingStatus === ReviewSendingStatus.Sended) {
+      setFormData({ ...formData, comment: '', rating: 0 });
+    }
+  }, [sendingStatus]);
 
   return (
     <form onSubmit={handleFormSubmit} className="reviews__form form" action="#" method="post">
@@ -48,7 +54,7 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your
           stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isSending || !isFormValid}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={sendingStatus === ReviewSendingStatus.Pending || !isFormValid}>Submit</button>
       </div>
     </form>
   );

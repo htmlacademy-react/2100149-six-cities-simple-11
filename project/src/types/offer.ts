@@ -1,3 +1,4 @@
+import { ReviewSendingStatus } from '../const';
 import { Reviews } from './review';
 
 export type Offers = Offer[];
@@ -6,7 +7,7 @@ export type CurrentOfferData = {
   offer: Offer | null;
   reviews: {
     data: Reviews;
-    isSending: boolean;
+    sendingStatus: ReviewSendingStatus;
   };
   nearbyOffers: Offers;
   isLoading: boolean;

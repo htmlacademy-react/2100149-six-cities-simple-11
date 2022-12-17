@@ -6,7 +6,7 @@ import { CurrentOfferData, Offer, Offers } from '../types/offer';
 import { UserReview, Reviews } from '../types/review';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { APIRoute} from '../const';
+import { APIRoute, ReviewSendingStatus} from '../const';
 
 export const fetchOffersAction = createAsyncThunk<Offers, undefined, {
   state: State;
@@ -34,7 +34,7 @@ export const fetchCurrentOfferDataAction = createAsyncThunk<CurrentOfferData, st
       offer: offerData,
       reviews: {
         data: reviewsData,
-        isSending: false
+        sendingStatus: ReviewSendingStatus.Rejected
       },
       nearbyOffers: nearbyOffersData,
       isLoading: false
