@@ -25,6 +25,12 @@ export enum NameSpace {
   Action = 'ACTION'
 }
 
+export enum ReviewSendingStatus {
+  Sended= 'SENDED',
+  Rejected = 'REJECTED',
+  Pending = 'PENDING',
+}
+
 export const ONE_STAR_WIDTH = 20;
 
 export const IMAGES_COUNT = 6;
@@ -33,9 +39,10 @@ export const REVIEWS_COUNT = 10;
 
 export const MAX_RATING = 5;
 
-export const MIN_REVIEW_LENGTH = 50;
-
-export const MAX_REVIEW_LENGTH = 300;
+export enum ReviewLength {
+  Min = 50,
+  Max = 300
+}
 
 export const Cities = [
   {

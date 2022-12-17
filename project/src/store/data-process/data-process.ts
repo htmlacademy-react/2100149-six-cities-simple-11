@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchOffersAction, fetchCurrentOfferDataAction, sendReviewAction } from '../api-actions';
 import { sortReviews } from '../../utils';
-import { NameSpace } from '../../const';
+import { NameSpace, ReviewSendingStatus } from '../../const';
 import { OffersData } from '../../types/state';
 
 const initialState: OffersData = {
@@ -13,7 +13,7 @@ const initialState: OffersData = {
     offer: null,
     reviews: {
       data: [],
-      isSending: false
+      sendingStatus: ReviewSendingStatus.Rejected,
     },
     nearbyOffers: [],
     isLoading: true,
@@ -41,11 +41,14 @@ export const dataProcess = createSlice({
         sortReviews(state.currentOffer.reviews.data);
       })
       .addCase(sendReviewAction.pending, (state) => {
-        state.currentOffer.reviews.isSending = true;
+        state.currentOffer.reviews.sendingStatus = ReviewSendingStatus.Pending;
+      })
+      .addCase(sendReviewAction.rejected, (state) => {
+        state.currentOffer.reviews.sendingStatus = ReviewSendingStatus.Rejected;
       })
       .addCase(sendReviewAction.fulfilled, (state, action) => {
         state.currentOffer.reviews.data = sortReviews(action.payload);
-        state.currentOffer.reviews.isSending = false;
+        state.currentOffer.reviews.sendingStatus = ReviewSendingStatus.Sended;
       });
   }
 });
