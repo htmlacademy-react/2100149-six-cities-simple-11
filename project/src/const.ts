@@ -30,14 +30,34 @@ export enum ReviewSendingStatus {
   Rejected = 'REJECTED',
   Pending = 'PENDING',
 }
+export const RatingInputs = [
+  {
+    value: 5,
+    title: 'perfect'
+  },
+  {
+    value: 4,
+    title: 'good'
+  },
+  {
+    value: 3,
+    title: 'not bad'
+  },
+  {
+    value: 2,
+    title: 'badly'
+  },
+  {
+    value: 1,
+    title: 'terribly'
+  }
+];
 
 export const ONE_STAR_WIDTH = 20;
 
 export const IMAGES_COUNT = 6;
 
 export const REVIEWS_COUNT = 10;
-
-export const MAX_RATING = 5;
 
 export enum ReviewLength {
   Min = 50,
