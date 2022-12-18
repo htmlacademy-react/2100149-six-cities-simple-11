@@ -13,33 +13,33 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
   const [formData, setFormData] = useState({
     id: String(offerId),
     comment: '',
-    rating: 0
+    rating: ''
   });
 
   const currentOffer = useAppSelector(getCurrentOfferData);
   const { reviews: { sendingStatus } } = currentOffer;
 
-  const isFormValid = formData.rating > 0 && formData.comment.length > ReviewLength.Min && formData.comment.length < ReviewLength.Max;
+  const isFormValid = formData.rating && formData.comment.length > ReviewLength.Min && formData.comment.length < ReviewLength.Max;
 
   const dispatch = useAppDispatch();
 
-  const handleInputChange = ({target}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setFormData({ ...formData, [target.name]: target.value });
+  const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFormData({ ...formData, [target.name]: target.value });
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(sendReviewAction(formData));
+    dispatch(sendReviewAction({ ...formData, rating: Number(formData.rating) }));
   };
 
   useEffect(() => {
     if (sendingStatus === ReviewSendingStatus.Sended) {
-      setFormData({ ...formData, comment: '', rating: 0 });
+      setFormData({ ...formData, comment: '', rating: '' });
     }
   }, [sendingStatus]);
 
   return (
     <form onSubmit={handleFormSubmit} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <RatingInput onChangeHandler={handleInputChange} />
+      <RatingInput selectedRating={formData.rating} onChangeHandler={handleInputChange}/>
       <textarea
         className="reviews__textarea form__textarea"
         id="review"

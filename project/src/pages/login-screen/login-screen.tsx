@@ -2,10 +2,12 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
-import { getCity } from '../../store/action-process/selectors';
+import { changeCity } from '../../store/action-process/action-process';
 import { loginAction } from '../../store/api-actions';
 import Logo from '../../components/logo/logo';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, Cities } from '../../const';
+
+const city = Cities[Math.floor(Math.random() * (Cities.length))];
 
 function LoginScreen(): JSX.Element {
   const [authData, setAuthData] = useState({
@@ -29,6 +31,8 @@ function LoginScreen(): JSX.Element {
   };
 
   const onChangeHandler = ({target}: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [target.name]: target.value });
+
+  const onCityClickHandler = () => dispatch(changeCity(city));
 
   return (
     <div className="page page--gray page--login">
@@ -83,8 +87,8 @@ function LoginScreen(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link to={AppRoute.Main} className="locations__item-link">
-                <span>{useAppSelector(getCity).name}</span>
+              <Link to={AppRoute.Main} className="locations__item-link" onClick={onCityClickHandler}>
+                <span>{city.name}</span>
               </Link>
             </div>
           </section>
