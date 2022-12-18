@@ -59,8 +59,6 @@ export const IMAGES_COUNT = 6;
 
 export const REVIEWS_COUNT = 10;
 
-export const MAX_RATING = 5;
-
 export enum ReviewLength {
   Min = 50,
   Max = 300
